@@ -1,7 +1,9 @@
 import React from "react";
 import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { useState } from 'react';
 import "./app.css";
+import Navbar from './components/navbar';
 import VideoList from './components/video_list/video_list';
 
 const App = (props) => {
@@ -21,8 +23,21 @@ const App = (props) => {
         .catch(error => console.log('error', error));
     },[]);
 
+    const useContent= useCallback( (name)=>{
+      const requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+      
+      fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${name}&key=AIzaSyA1j6H84CuYNA2-A2oH0juf_mcf2Q8TwoE`, requestOptions)
+        .then(response => response.json())
+        .then(result => setVideos(result.items))
+        .catch(error => console.log('error', error));
+    })
 
-  return  <VideoList videos={videos}/>;
+  return  <>
+  <Navbar popContent={useContent}/>
+  <VideoList videos={videos}/></>;
 }
 
 export default App;
