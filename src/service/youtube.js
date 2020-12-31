@@ -1,25 +1,32 @@
 class Youtube {
 
-    constructor(key){
-        this.key = key;
-
-        this.getRequestOptions = {
-            method: 'GET',
-            redirect: 'follow'
+    constructor(httpClient){
+        this.youtube = httpClient;
         }
+    
+
+    async mostPopular(){
+        const response = await this.youtube.get('videos',{
+            params: {
+                q:'yerinB',
+                part:'snippet',
+                maxResults:25,
+                type:'video'
+            }
+        })
+        return response.data.items;
     }
 
-    mostPopular(){
-        return fetch(
-            `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=yerinB&key=${this.key}&type=video`, this.getRequestOptions)
-        .then(response => response.json())
-        .then(result => result.items);
-    }
-
-    search(name){
-        return fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${name}&key=${this.key}`, this.getRequestOptions)
-        .then(response => response.json())
-        .then(result => result.items);
+    async search(name){
+        const response = await this.youtube.get('videos',{
+            params: {
+                q:name,
+                part:'snippet',
+                maxResults:25,
+                type:'video'
+            }
+        })
+        return response.data.items;
     }
 
 

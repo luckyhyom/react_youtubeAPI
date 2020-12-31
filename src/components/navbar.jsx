@@ -1,17 +1,17 @@
 import React from 'react';
-import { useCallback,memo,useRef } from 'react';
+import { memo,useRef } from 'react';
 import styles1 from './search.module.css'
 
 const Navbar=  memo((props) => {
     const searchRef = useRef();
 
-    const test = useCallback((event) => {
+    const test = (event) => {
         
         event.preventDefault();
         const content = searchRef.current.value;
 
         content&&props.popContent(content);
-    })
+    }
 
 return <form onSubmit={test}>
 <nav className={styles1.searchBarBack} ><input ref={searchRef} type="search" name="" id="" /></nav>
