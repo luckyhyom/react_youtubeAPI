@@ -1,28 +1,38 @@
-class YoutubeFetch {
+class Youtube {
 
-    constructor(key){
-        this.key = key;
-
-        this.getRequestOptions = {
-            method: 'GET',
-            redirect: 'follow'
+    constructor(httpClient){
+        this.youtube = httpClient;
         }
-    }
+    
 
     async mostPopular(){
-        const response = await fetch(
-            `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=yerinB&key=${this.key}&type=video`, this.getRequestOptions);
-        const result = await response.json();
-        return result.items;
+        const response = await this.youtube.get('search',{
+            params: {
+                q:'yerinB',
+                part:'snippet',
+                maxResults:25,
+                type:'video',
+                chart: 'mostPopular',
+            },
+        })
+        return response.data.items;
     }
 
     async search(name){
-        const response = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${name}&key=${this.key}`, this.getRequestOptions);
-        const result = await response.json();
-        return result.items;
+        const response = await this.youtube.get('search',{
+            params: {
+                q:name,
+                part:'snippet',
+                maxResults:25,
+                type:'video'
+            },
+        })
+        return response.data.items;
     }
 
 
 }
 
-export default YoutubeFetch;
+
+
+export default Youtube;
